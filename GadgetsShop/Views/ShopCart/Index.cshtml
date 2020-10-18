@@ -1,0 +1,36 @@
+﻿@model ShopCartViewModel
+
+@{
+    string connStr = "Server=(localdb)\\MSSQLLocalDB;Database=GadgetsShop;Trusted_Connection=True;MultipleActiveResultSets=true";
+    int totalSum = 0;
+}
+    <h1>Корзина</h1>
+    <div class="container">
+        @foreach (var el in Model.ShopCart.ListShopItems)
+        {
+        <div class="alert alert-warning mt-3">
+            @{
+                string gadgID = "";
+                string price = "";
+                string name = "";
+
+
+                GadgetsShop.SqlWorker sqlWorker = new GadgetsShop.SqlWorker(connStr);
+                gadgID = sqlWorker.SelectDataFromDB("SELECT gadgetid FROM ShopCartItem WHERE id=" + el.Id);
+                name = sqlWorker.SelectDataFromDB("SELECT name FROM Gadget WHERE id=" + gadgID);
+                price = sqlWorker.SelectDataFromDB("SELECT price FROM Gadget WHERE id=" + gadgID);
+
+                int gadgPrice = Convert.ToInt32(price);
+                totalSum += gadgPrice;
+
+            }
+            <b>Гаджет:</b>@name<br />
+            <b>Цена:</b>@price BYN
+            <p><a class="btn btn-warning button-delete" asp-controller="ShopCart" asp-action="RemoveFromCart" asp-route-id="@el.Id">Удалить из корзины</a></p>
+        </div>
+
+        }
+        <p>Иготовая сумма: @totalSum BYN</p>
+        <hr />
+        <a class="btn btn-danger" asp-controller="Order" asp-action="Checkout">Оплатить</a>
+    </div>

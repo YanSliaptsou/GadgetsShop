@@ -1,0 +1,11 @@
+﻿@model HomeViewModel
+
+    <h1>Доступные гаджеты</h1>
+    <div class="row mt-5 mb-2">
+        @{ 
+            foreach(Gadget gadget in Model.availableGadgets)
+            {
+                @Html.Partial("AllGadgets",gadget)
+            }
+        }
+    </div>

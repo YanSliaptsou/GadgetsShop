@@ -1,0 +1,9 @@
+﻿<h1>@Model.GadgetCategory</h1>
+<div class="row mt-5 mb-2">
+    @{
+        foreach (Gadget gadget in Model.Gadgets)
+        {
+            @Html.Partial("AllGadgets", gadget);
+        }
+    }
+</div>
